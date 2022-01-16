@@ -19,6 +19,6 @@ from booking_app.views import HomePage,AddRoom
 
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),
-    path('', AddRoom.as_view(), name='add-room')
+    path('add-room', AddRoom.as_view(), name='add-room')
 
 ]

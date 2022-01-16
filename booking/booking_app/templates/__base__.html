@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home Page</title>
+  <title>{% block title %}{% endblock title %}Booking Conference Room</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sticky-footer/">
   <link rel="stylesheet" href="{% static 'css/main.css' %}" />
@@ -13,30 +13,11 @@
 </head>
 
 <body>
-<!-- Nav -->
-<nav class="navbar navbar-expand-lg navbar navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">System rezerwacji sal</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-    <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="/">Lista wszystkich sal<span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link" href="/">Dodaj salę</a>
-    </div>
-  </div>
-</nav>
-<!-- Nav -->
+
+{% block content %}{% endblock content %}
 
 
 
-<!-- Footer -->
-<footer class="footer">
-      <div class="container">
-        <span class="text-muted">By gogul</span>
-      </div>
-    </footer>
-<!-- Footer -->
 </body>
 </html>
 

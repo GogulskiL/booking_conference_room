@@ -15,10 +15,10 @@ Including another URLconf
 """
 
 from django.urls import path
-from booking_app.views import HomePage,AddRoom
+from booking_app.views import HomePage, AddRoomView
 
 urlpatterns = [
     path('', HomePage.as_view(), name='home'),
-    path('add-room', AddRoom.as_view(), name='add-room')
+    path('add-room', AddRoomView.as_view(), name='add-room')
 
 ]

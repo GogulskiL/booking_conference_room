@@ -35,3 +35,38 @@ class RoomListView(View):
     def get(self, request):
         rooms = ConferenceRoom.objects.all()
         return render(request, "rooms_list.html", context={"rooms": rooms})
+
+
+class DeleteRoomView(View):
+    def get(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        room.delete()
+        return redirect("rooms-list")
+
+
+class ModifyRoomView(View):
+    def get(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        return render(request, "modify_room.html", context={"room": room})
+
+    def post(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        name = request.POST.get("room-name")
+        capacity = request.POST.get("capacity")
+        capacity = int(capacity) if capacity else 0
+        projector = request.POST.get("projector") == "on"
+
+        if not name:
+            return render(request, "modify_room.html", context={"room": room, "error": "Nie podano nawy sali"})
+        if capacity <= 0:
+            return render(request, "modify_room.html", context={"room": room, "error": "Pojemność sali musi być dodatnia"})
+
+        if name != room.name and ConferenceRoom.objects.filter(name=name).first():
+            return render(request, "modify_room.html", context={"room": room, "error": "Sala o podanej nazwie istnieje"})
+
+        room.name = name
+        room.capacity = capacity
+        room.projector_availability = projector
+        room.save()
+
+        return redirect("rooms-list")

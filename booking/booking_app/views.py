@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views import View
-from booking_app.models import ConferenceRoom
+from booking_app.models import ConferenceRoom, RoomReservation
+import datetime
 
 
 class HomePage(TemplateView):
@@ -68,5 +69,24 @@ class ModifyRoomView(View):
         room.capacity = capacity
         room.projector_availability = projector
         room.save()
+
+        return redirect("rooms-list")
+
+
+class ReservationView(View):
+    def get(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        return render(request, "reservation.html", context={"room": room})
+
+    def post(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        date = request.POST.get("reservation-date")
+        comment = request.POST.get("comment")
+        if RoomReservation.objects.filter(room=room, date=date):
+            return render(request, "reservation.html", context={"room": room, "error": "Sala jest już zarezerwowana!"})
+        if date < str(datetime.date.today()):
+            return render(request, "reservation.html", context={"room": room, "error": "Data jest z przeszłości!"})
+
+        RoomReservation.objects.create(room=room, date=date, comment=comment)
 
         return redirect("rooms-list")

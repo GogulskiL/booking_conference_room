@@ -27,7 +27,7 @@ class AddRoomView(View):
             return render(request, "add_room.html", context={"error": "Sala o podanej nazwie istnieje"})
 
         ConferenceRoom.objects.create(
-            name=name, capacity=capacity, projector_availbity=projector)
+            name=name, capacity=capacity, projector_availability=projector)
 
         return redirect("rooms-list")
 
@@ -90,3 +90,9 @@ class ReservationView(View):
         RoomReservation.objects.create(room=room, date=date, comment=comment)
 
         return redirect("rooms-list")
+
+class RoomDetailsView(View):
+    def get(self, request, room_id):
+        room = ConferenceRoom.objects.get(id=room_id)
+        reservations = room.roomreservation_set.filter(date__gte=str(datetime.date.today())).order_by('date')
+        return render(request, "room_details.html", context={"room": room, "reservations": reservations})
